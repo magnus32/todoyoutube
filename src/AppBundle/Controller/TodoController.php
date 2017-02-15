@@ -41,10 +41,38 @@ class TodoController extends Controller
         $todo = new Todo();
 
         $form = $this->createForm(TodoCreate::class, $todo);//since symfony 3 - before: new TodoCreate()
+        $form->handleRequest($request);
+        if(!$form->isSubmitted())
+        {
+            return $this->render('todo/create.html.twig', array(
+                'form' => $form->createView()
+            ));
+        }
 
-        return $this->render('todo/create.html.twig', array(
-            'form' => $form->createView()
-        ));
+
+
+        if($form->isSubmitted() && $form->isValid()){
+            // Get Data
+            $name = $form['name']->getData();
+            $category = $form['category']->getData();
+            $description = $form['description']->getData();
+            $priority = $form['priority']->getData();
+            $due_date = $form['due_date']->getData();
+            $now = new\DateTime('now');
+            $todo->setName($name);
+            $todo->setCategory($category);
+            $todo->setDescription($description);
+            $todo->setPriority($priority);
+            $todo->setDueDate($due_date);
+            $todo->setCreateDate($now);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($todo);
+            $em->flush();
+            $this->addFlash(
+                'notice', 'Todo Added'
+            );
+        }
+        return $this->redirectToRoute('todo_list');
     }
 
     /**
@@ -59,11 +87,7 @@ class TodoController extends Controller
 
         $now = new\DateTime('now');
 
-      /*  $todo->setName($name);
-        $todo->setCategory($category);
-        $todo->setDescription($description);
-        $todo->setPriority($priority);
-        $todo->setDueDate($due_date);*/
+
         $todo->setCreateDate($now);
 
         $form = $this->createFormBuilder($todo)

@@ -18,7 +18,7 @@ class TodoCreate extends AbstractType
         $builder->add('name', TextType::class)
             ->add('category', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('dueDate', DateTimeType::class)
+            ->add('due_date', DateTimeType::class)
             ->add('priority', ChoiceType::class, array(
                 'choices' => array(
                     'Low' => 'Low',
