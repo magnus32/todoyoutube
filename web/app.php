@@ -1,6 +1,6 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;//A1
+use Symfony\Component\HttpFoundation\Request;//A1/A66
 
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__.'/../app/autoload.php';//test
